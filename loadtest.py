@@ -14,7 +14,6 @@ def execute_query(conn_string, query):
     db_query = db_conn.cursor().execute(query)
     return db_query
 
-
 class PostgresClient:
     def __getattr__(self, name):
         def request_handler(*args, **kwargs):
@@ -37,6 +36,7 @@ class PostgresClient:
                     response_length=0,
                     exception=e,
                 )
+
                 print("error {}".format(e))
 
         return request_handler
@@ -58,9 +58,7 @@ class PostgresLocust(User):
     min_wait = 0
     max_wait = 1
     tasks = [CustomTaskSet]
-    print(tasks)
     wait_time = between(min_wait, max_wait)
 
     def __init__(self, *args):
-        super()
         self.client = PostgresClient()
