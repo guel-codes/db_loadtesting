@@ -1,8 +1,6 @@
 import psycopg2
 from locust import User, TaskSet, task, between, events
 import time
-import random
-import os
 
 
 def create_conn(conn_string):
@@ -22,7 +20,7 @@ class PostgresClient:
         def request_handler(*args, **kwargs):
             start_time = time.time()
             try:
-                res = execute_query(*args, **kwargs)
+                res = execute_query(*args, **kwargs) 
                 response_time = int((time.time() - start_time) * 1000)
                 events.request.fire(
                     request_type="postgres",
@@ -47,8 +45,8 @@ class PostgresClient:
 class CustomTaskSet(TaskSet):
     conn_string = "postgresql://postgres:postgres@localhost:5432/loadtesting_db"
 
-    @task
-    def execute_query(self):
+    @task # this task decorator is used so each spawned users knows which method to run
+    def run_query(self):
         self.client.execute_query(
             self.conn_string,
             f"SELECT * FROM loadtesting.user",
