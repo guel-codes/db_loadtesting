@@ -20,10 +20,10 @@ class PostgresClient:
         def request_handler(*args, **kwargs):
             start_time = time.time()
             try:
-                res = execute_query(*args, **kwargs)
+                _ = execute_query(*args, **kwargs)
                 response_time = int((time.time() - start_time) * 1000)
                 events.request.fire(
-                    request_type="postgres",
+                    request_type="postgres_success",
                     name=name,
                     response_time=response_time,
                     response_length=0,
@@ -31,7 +31,7 @@ class PostgresClient:
             except Exception as e:
                 response_time = int((time.time() - start_time) * 1000)
                 events.request.fire(
-                    request_type="postgres",
+                    request_type="postgres_failure",
                     name=name,
                     response_time=response_time,
                     response_length=0,
@@ -70,5 +70,4 @@ class PostgresLocust(User):
     wait_time = between(min_wait, max_wait)
 
     def __init__(self, *args):
-        super().__init__(*args)
         self.client = PostgresClient()
