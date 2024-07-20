@@ -14,12 +14,13 @@ def execute_query(conn_string, query):
     db_query = db_conn.cursor().execute(query)
     return db_query
 
+
 class PostgresClient:
     def __getattr__(self, name):
         def request_handler(*args, **kwargs):
             start_time = time.time()
             try:
-                res = execute_query(*args, **kwargs) 
+                res = execute_query(*args, **kwargs)
                 response_time = int((time.time() - start_time) * 1000)
                 events.request.fire(
                     request_type="postgres",
@@ -45,11 +46,16 @@ class PostgresClient:
 class CustomTaskSet(TaskSet):
     conn_string = "postgresql://postgres:postgres@localhost:5432/loadtesting_db"
 
-    @task # this task decorator is used so each spawned users knows which method to run
+    @task  # this task decorator is used so each spawned users knows which method to run
     def run_query(self):
         self.client.execute_query(
             self.conn_string,
-            f"SELECT * FROM loadtesting.user",
+            f"SELECT * FROM loadtesting.invoice WHERE amount > 500",
+        )
+
+        self.client.execute_query(
+            self.conn_string,
+            f"SELECT * FROM loadtesting.invoice WHERE amount < 10",
         )
 
 
