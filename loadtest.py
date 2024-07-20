@@ -1,6 +1,6 @@
 import psycopg2
 from locust import User, TaskSet, task, between, events
-import time
+import random, time
 
 
 def create_conn(conn_string):
@@ -43,28 +43,32 @@ class PostgresClient:
         return request_handler
 
 
-class CustomTaskSet(TaskSet):
+class UserTasks(TaskSet):
     conn_string = "postgresql://postgres:postgres@localhost:5432/loadtesting_db"
 
     @task  # this task decorator is used so each spawned users knows which method to run
-    def run_query(self):
+    def run_select_query(self):
         self.client.execute_query(
             self.conn_string,
             f"SELECT * FROM loadtesting.invoice WHERE amount > 500",
         )
 
+    @task(3)
+    def run_update_query(self):
+        random_amount = random.randint(1, 30)
         self.client.execute_query(
             self.conn_string,
-            f"SELECT * FROM loadtesting.invoice WHERE amount < 10",
+            f"UPDATE loadtesting.invoice SET amount={random_amount} WHERE amount < 10",
         )
 
 
 # This class will be executed when you run locust
 class PostgresLocust(User):
+    tasks = [UserTasks]
     min_wait = 0
-    max_wait = 1
-    tasks = [CustomTaskSet]
+    max_wait = 3
     wait_time = between(min_wait, max_wait)
 
     def __init__(self, *args):
+        super().__init__(*args)
         self.client = PostgresClient()
