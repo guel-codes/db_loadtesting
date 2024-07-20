@@ -55,7 +55,7 @@ class UserTasks(TaskSet):
 
     @task(3)
     def run_update_query(self):
-        random_amount = random.randint(1, 30)
+        random_amount = random.randint(1, 12)
         self.client.execute_query(
             self.conn_string,
             f"UPDATE loadtesting.invoice SET amount={random_amount} WHERE amount < 10",
