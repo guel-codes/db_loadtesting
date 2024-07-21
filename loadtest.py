@@ -46,7 +46,7 @@ class PostgresClient:
 class UserTasks(TaskSet):
     conn_string = "postgresql://postgres:postgres@localhost:5432/loadtesting_db"
 
-    @task  # this task decorator is used so each spawned users knows which method to run
+    @task 
     def run_select_query(self):
         self.client.execute_query(
             self.conn_string,
@@ -62,7 +62,7 @@ class UserTasks(TaskSet):
         )
 
 
-# This class will be executed when you run locust
+
 class PostgresLocust(User):
     tasks = [UserTasks]
     min_wait = 0
