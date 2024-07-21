@@ -4,7 +4,7 @@ import random, time
 
 
 def create_conn(conn_string):
-    print("Connect and Query PostgreSQL")
+    print("connect to PostgreSQL")
     conn = psycopg2.connect(conn_string)
     return conn
 
@@ -12,6 +12,7 @@ def create_conn(conn_string):
 def execute_query(conn_string, query):
     db_conn = create_conn(conn_string)
     db_query = db_conn.cursor().execute(query)
+    print("execute query")
     return db_query
 
 
@@ -46,21 +47,20 @@ class PostgresClient:
 class UserTasks(TaskSet):
     conn_string = "postgresql://postgres:postgres@localhost:5432/loadtesting_db"
 
-    @task 
+    @task
     def run_select_query(self):
         self.client.execute_query(
             self.conn_string,
             f"SELECT * FROM loadtesting.invoice WHERE amount > 500",
         )
 
-    @task(3)
+    @task
     def run_update_query(self):
         random_amount = random.randint(1, 12)
         self.client.execute_query(
             self.conn_string,
             f"UPDATE loadtesting.invoice SET amount={random_amount} WHERE amount < 10",
         )
-
 
 
 class PostgresLocust(User):
