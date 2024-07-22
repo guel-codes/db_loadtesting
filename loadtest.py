@@ -63,7 +63,7 @@ class UserTasks(TaskSet):
         )
 
 
-class PostgresLocust(User):
+class PostgresLocust(PostgresClient, User):
     tasks = [UserTasks]
     min_wait = 0
     max_wait = 3
