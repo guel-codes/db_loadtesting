@@ -1,11 +1,11 @@
-import psycopg2
+import psycopg
 from locust import User, TaskSet, task, between, events
 import random, time
 
 
 def create_conn(conn_string):
     print("connect to PostgreSQL")
-    conn = psycopg2.connect(conn_string)
+    conn = psycopg.connect(conn_string)
     return conn
 
 
