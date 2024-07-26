@@ -30,7 +30,7 @@ for _ in range(num_records):
     # invoice_table
     invoice_id = str(uuid.uuid4())
     user_id = user_uuid
-    amount = random.randint(1, 1000)
+    amount = random.randint(1, 100)
     invoice_date = fake.date_time_this_year()
 
     # Construct the SQL query

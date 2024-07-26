@@ -51,7 +51,7 @@ class UserTasks(TaskSet):
     def run_select_query(self):
         self.client.execute_query(
             self.conn_string,
-            f"SELECT * FROM loadtesting.invoice WHERE amount > 500",
+            f"SELECT * FROM loadtesting.invoice WHERE amount > 50",
         )
 
     @task
