@@ -47,14 +47,14 @@ class PostgresClient:
 class UserTasks(TaskSet):
     conn_string = "postgresql://postgres:postgres@localhost:5432/loadtesting_db"
 
-    @task
+    @task(1)
     def run_select_query(self):
         self.client.execute_query(
             self.conn_string,
             f"SELECT * FROM loadtesting.invoice WHERE amount > 50",
         )
 
-    @task
+    @task(3)
     def run_update_query(self):
         random_amount = random.randint(1, 12)
         self.client.execute_query(
