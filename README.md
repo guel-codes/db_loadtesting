@@ -4,7 +4,7 @@ This repo will be used to perform database loadtesting on a postgres database
 
 ## How to run the test
 
-- `pip3 install psycopg2` - https://pypi.org/project/psycopg2/
+- `pip3 install psycopg` - https://www.psycopg.org/psycopg3/docs/basic/install.html
 
 - `pip3 install locust` - https://docs.locust.io/en/stable/installation.html
 
