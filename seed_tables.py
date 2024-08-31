@@ -8,7 +8,7 @@ USERNAME = "postgres"
 PASSWORD = "postgres"
 ADDRESS = "localhost"
 PORT = "5432"
-DBNAME = "loadtesting_db"
+DBNAME = "test_db"
 
 # Create a cursor object to interact with the database
 conn = psycopg2.connect(
